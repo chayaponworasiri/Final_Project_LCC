@@ -19,6 +19,7 @@ float gScale = 0.85093167;
 float bScale = 0.2727272;
 
 bool activateFlag;
+bool gpsplusbutton, gpsminusbutton;
 int garden = 0;
 
 static const uint16_t screenWidth  = 480;
@@ -142,9 +143,11 @@ void updateGPS()
     sprintf(buf, "%.6f", (float)lng);
     lv_label_set_text(ui_LongtitudeValue, buf);
 }
-void updateGarden(amount)
+void updateGarden(int amount)
 {
-  if (amount < 0) return;
+  if (amount < 0){
+    if (garden > 0) garden += amount; 
+  }
   garden += amount;
   char buf[8];
   sprintf(buf, "%d", (int)garden);
@@ -201,8 +204,8 @@ void loop() {
     activateFlag = lv_obj_has_state(ui_ActivateButton, LV_STATE_CHECKED);
     if (activateFlag) updateRGB();
 
-    gpsplusbutton = lv_obj_has_state(ui_Addbutton, LV_STATE_PRESSED)
-    gpsminusbutton = lv_obj_has_state(ui_Minusbutton, LV_STATE_PRESSED)
+    gpsplusbutton = lv_obj_has_state(ui_Addbutton, LV_STATE_PRESSED);
+    gpsminusbutton = lv_obj_has_state(ui_Minusbutton, LV_STATE_PRESSED);
     if (gpsplusbutton) updateGarden(1);
     if (gpsminusbutton) updateGarden(-1);
 
