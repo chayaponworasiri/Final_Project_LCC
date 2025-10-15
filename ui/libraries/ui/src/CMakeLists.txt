@@ -1,0 +1,11 @@
+SET(SOURCES ui_Menu.c
+    ui_Color.c
+    ui_Gps.c
+    ui_Wifi.c
+    ui_Data.c
+    ui.c
+    ui_comp_hook.c
+    ui_helpers.c
+    ui_events.c)
+
+add_library(ui ${SOURCES})
