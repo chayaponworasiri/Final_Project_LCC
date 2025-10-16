@@ -1,5 +1,4 @@
 #include <lvgl.h>
-#include <TFT_eSPI.h>
 #include <ui.h>
 #include <Adafruit_TCS34725.h>
 #include <TinyGPS++.h>
@@ -8,6 +7,9 @@
 #include <Preferences.h>
 #include <HTTPClient.h>
 #include <ArduinoJson.h>
+#include <TFT_eSPI.h>
+// #include "LGFX_ESP32_480x320.h" 
+
 
 // ====== WiFi ======
 const char* ssid = "FK Room";
@@ -35,6 +37,7 @@ static const uint16_t screenHeight = 320;
 static lv_disp_draw_buf_t draw_buf;
 static lv_color_t buf[ screenWidth * screenHeight / 10 ];
 TFT_eSPI tft = TFT_eSPI(screenWidth, screenHeight);
+// LGFX tft;
 
 bool activateFlag;
 bool prevPlus = false;
