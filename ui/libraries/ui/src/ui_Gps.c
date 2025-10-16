@@ -12,9 +12,9 @@ lv_obj_t * ui_LatitudeLabel = NULL;
 lv_obj_t * ui_LongitudeLabel = NULL;
 lv_obj_t * ui_LatitudeValue = NULL;
 lv_obj_t * ui_LongtitudeValue = NULL;
-lv_obj_t * ui_Addbutton = NULL;
-lv_obj_t * ui_Label12 = NULL;
 lv_obj_t * ui_Minusbutton = NULL;
+lv_obj_t * ui_Label12 = NULL;
+lv_obj_t * ui_Addbutton = NULL;
 lv_obj_t * ui_Label11 = NULL;
 lv_obj_t * ui_GardenValue = NULL;
 lv_obj_t * ui_GardenLabel = NULL;
@@ -36,7 +36,7 @@ void ui_event_Button2(lv_event_t * e)
     }
 }
 
-void ui_event_Addbutton(lv_event_t * e)
+void ui_event_Minusbutton(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
 
@@ -45,7 +45,7 @@ void ui_event_Addbutton(lv_event_t * e)
     }
 }
 
-void ui_event_Minusbutton(lv_event_t * e)
+void ui_event_Addbutton(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
 
@@ -108,31 +108,31 @@ void ui_Gps_screen_init(void)
     lv_obj_set_y(ui_LongtitudeValue, 254);
     lv_label_set_text(ui_LongtitudeValue, "0.00000000000000");
 
-    ui_Addbutton = lv_btn_create(ui_Gps);
-    lv_obj_set_width(ui_Addbutton, 33);
-    lv_obj_set_height(ui_Addbutton, 41);
-    lv_obj_set_x(ui_Addbutton, -186);
-    lv_obj_set_y(ui_Addbutton, -55);
-    lv_obj_set_align(ui_Addbutton, LV_ALIGN_CENTER);
-    lv_obj_add_flag(ui_Addbutton, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
-    lv_obj_clear_flag(ui_Addbutton, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-
-    ui_Label12 = lv_label_create(ui_Addbutton);
-    lv_obj_set_width(ui_Label12, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_Label12, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_align(ui_Label12, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_Label12, "<");
-
     ui_Minusbutton = lv_btn_create(ui_Gps);
     lv_obj_set_width(ui_Minusbutton, 33);
     lv_obj_set_height(ui_Minusbutton, 41);
-    lv_obj_set_x(ui_Minusbutton, -99);
+    lv_obj_set_x(ui_Minusbutton, -186);
     lv_obj_set_y(ui_Minusbutton, -55);
     lv_obj_set_align(ui_Minusbutton, LV_ALIGN_CENTER);
     lv_obj_add_flag(ui_Minusbutton, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
     lv_obj_clear_flag(ui_Minusbutton, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
 
-    ui_Label11 = lv_label_create(ui_Minusbutton);
+    ui_Label12 = lv_label_create(ui_Minusbutton);
+    lv_obj_set_width(ui_Label12, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_Label12, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_align(ui_Label12, LV_ALIGN_CENTER);
+    lv_label_set_text(ui_Label12, "<");
+
+    ui_Addbutton = lv_btn_create(ui_Gps);
+    lv_obj_set_width(ui_Addbutton, 33);
+    lv_obj_set_height(ui_Addbutton, 41);
+    lv_obj_set_x(ui_Addbutton, -99);
+    lv_obj_set_y(ui_Addbutton, -55);
+    lv_obj_set_align(ui_Addbutton, LV_ALIGN_CENTER);
+    lv_obj_add_flag(ui_Addbutton, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
+    lv_obj_clear_flag(ui_Addbutton, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+
+    ui_Label11 = lv_label_create(ui_Addbutton);
     lv_obj_set_width(ui_Label11, LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(ui_Label11, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_align(ui_Label11, LV_ALIGN_CENTER);
@@ -215,8 +215,8 @@ void ui_Gps_screen_init(void)
     lv_label_set_text(ui_Point4SaveLabel, "Point 4 Save");
 
     lv_obj_add_event_cb(ui_Button2, ui_event_Button2, LV_EVENT_ALL, NULL);
-    lv_obj_add_event_cb(ui_Addbutton, ui_event_Addbutton, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_Minusbutton, ui_event_Minusbutton, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_Addbutton, ui_event_Addbutton, LV_EVENT_ALL, NULL);
 
 }
 
@@ -232,9 +232,9 @@ void ui_Gps_screen_destroy(void)
     ui_LongitudeLabel = NULL;
     ui_LatitudeValue = NULL;
     ui_LongtitudeValue = NULL;
-    ui_Addbutton = NULL;
-    ui_Label12 = NULL;
     ui_Minusbutton = NULL;
+    ui_Label12 = NULL;
+    ui_Addbutton = NULL;
     ui_Label11 = NULL;
     ui_GardenValue = NULL;
     ui_GardenLabel = NULL;
