@@ -1,4 +1,5 @@
 #include <lvgl.h>
+#include <TFT_eSPI.h>
 #include <ui.h>
 #include <Adafruit_TCS34725.h>
 #include <TinyGPS++.h>
@@ -7,17 +8,14 @@
 #include <Preferences.h>
 #include <HTTPClient.h>
 #include <ArduinoJson.h>
-#include <TFT_eSPI.h>
-// #include "LGFX_ESP32_480x320.h" 
-
 
 // ====== WiFi ======
-const char* ssid = "FK Room";
-const char* password = "0954852953";
+const char* ssid = "mai-mee-net-rer-ja";
+const char* password = "Hisatang888";
 
 // ====== API URLs ======
-String apiColorUrl = "http://192.168.1.100:3000/api/upload_color";
-String apiPointUrl = "http://192.168.1.100:3000/api/upload_point";
+String apiColorUrl = "http://192.168.245.189:3000/api/upload_color";
+String apiPointUrl = "http://192.168.245.189:3000/api/upload_point";
 
 // ====== GPS ======
 static const int RXPin = 16, TXPin = 19;
@@ -37,7 +35,6 @@ static const uint16_t screenHeight = 320;
 static lv_disp_draw_buf_t draw_buf;
 static lv_color_t buf[ screenWidth * screenHeight / 10 ];
 TFT_eSPI tft = TFT_eSPI(screenWidth, screenHeight);
-// LGFX tft;
 
 bool activateFlag;
 bool prevPlus = false;
@@ -142,10 +139,14 @@ void uploadPointData(int pointNum, int gardenID, float lat, float lng){
 }
 
 void savePoint(int pointNum){
-  if(!gps.location.isValid()) { Serial.println("No GPS fix"); return; }
+//   if(!gps.location.isValid()) { Serial.println("No GPS fix"); return; }
   prefs.begin("garden", false);
-  float lat = gps.location.lat();
-  float lng = gps.location.lng();
+  float latsim[] = {14.044,14.044,14.042,14.042};
+  float lngsim[] = {100.610,100.615,100.615,100.610};
+  float lat = latsim[pointNum-1];
+  float lng = lngsim[pointNum-1];
+//   float lat = gps.location.lat();
+//   float lng = gps.location.lng();
   int gardenID = garden;
   String keyLat = "point"+String(pointNum)+"_lat";
   String keyLng = "point"+String(pointNum)+"_lng";
