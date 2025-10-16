@@ -36,24 +36,6 @@ void ui_event_Button2(lv_event_t * e)
     }
 }
 
-void ui_event_Minusbutton(lv_event_t * e)
-{
-    lv_event_code_t event_code = lv_event_get_code(e);
-
-    if(event_code == LV_EVENT_CLICKED) {
-        BtnMinus_event_handler(e);
-    }
-}
-
-void ui_event_Addbutton(lv_event_t * e)
-{
-    lv_event_code_t event_code = lv_event_get_code(e);
-
-    if(event_code == LV_EVENT_CLICKED) {
-        BtnPlus_event_handler(e);
-    }
-}
-
 // build funtions
 
 void ui_Gps_screen_init(void)
@@ -144,7 +126,7 @@ void ui_Gps_screen_init(void)
     lv_obj_set_x(ui_GardenValue, -143);
     lv_obj_set_y(ui_GardenValue, -53);
     lv_obj_set_align(ui_GardenValue, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_GardenValue, "0");
+    lv_label_set_text(ui_GardenValue, "1");
 
     ui_GardenLabel = lv_label_create(ui_Gps);
     lv_obj_set_width(ui_GardenLabel, LV_SIZE_CONTENT);   /// 1
@@ -215,8 +197,6 @@ void ui_Gps_screen_init(void)
     lv_label_set_text(ui_Point4SaveLabel, "Point 4 Save");
 
     lv_obj_add_event_cb(ui_Button2, ui_event_Button2, LV_EVENT_ALL, NULL);
-    lv_obj_add_event_cb(ui_Minusbutton, ui_event_Minusbutton, LV_EVENT_ALL, NULL);
-    lv_obj_add_event_cb(ui_Addbutton, ui_event_Addbutton, LV_EVENT_ALL, NULL);
 
 }
 

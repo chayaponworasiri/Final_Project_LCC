@@ -10,12 +10,12 @@
 #include <ArduinoJson.h>
 
 // ====== WiFi ======
-const char* ssid = "mai-mee-net-rer-ja";
-const char* password = "Hisatang888";
+const char* ssid = "FK Room";
+const char* password = "0954852953";
 
 // ====== API URLs ======
-String apiColorUrl = "http://192.168.245.189:3000/api/upload_color";
-String apiPointUrl = "http://192.168.245.189:3000/api/upload_point";
+String apiColorUrl = "http://192.168.0.102:3000/api/upload_color";
+String apiPointUrl = "http://192.168.0.102:3000/api/upload_point";
 
 // ====== GPS ======
 static const int RXPin = 16, TXPin = 19;
@@ -39,7 +39,7 @@ TFT_eSPI tft = TFT_eSPI(screenWidth, screenHeight);
 bool activateFlag;
 bool prevPlus = false;
 bool prevMinus = false;
-int garden = 0;
+int garden = 1;
 
 // ====== NVS ======
 Preferences prefs;
@@ -50,6 +50,12 @@ float currentLng = 0.0;
 float currentR = 0.0;
 float currentG = 0.0;
 float currentB = 0.0;
+
+// ====== Garden boundaries (ปรับอัตโนมัติหลังจาก set point ทั้ง 4 จุด) ======
+float gardenLatNW = 0;
+float gardenLngNW = 0;
+float gardenLatSE = 0;
+float gardenLngSE = 0;
 
 // ====== LVGL helpers ======
 #if LV_USE_LOG != 0
@@ -86,20 +92,10 @@ void updateRGB(){
   float green = min(255, (int)(g_raw * gScale));
   float blue  = min(255, (int)(b_raw * bScale));
 
-  float targetR[] = {118,104,85,60,47,31};
-  float targetG[] = {137,125,122,97,85,66};
-  float targetB[] = {24,23,38,35,46,34};
-  float minDist = 99999; int minIndex=-1;
-  for(int i=0;i<6;i++){
-    float d = sqrt(pow(targetR[i]-red,2)+pow(targetG[i]-green,2)+pow(targetB[i]-blue,2));
-    if(d<minDist){minDist=d; minIndex=i;}
-  }
-
   char buf[16];
   sprintf(buf,"%d", (int)red); lv_label_set_text(ui_RValue, buf);
   sprintf(buf,"%d", (int)green); lv_label_set_text(ui_GValue, buf);
   sprintf(buf,"%d", (int)blue); lv_label_set_text(ui_BValue, buf);
-  sprintf(buf,"%d", (int)minIndex+1); lv_label_set_text(ui_GroupValue, buf);
 
   lv_color_t color = lv_color_make((uint8_t)red,(uint8_t)green,(uint8_t)blue);
   lv_obj_set_style_bg_color(ui_RGBBox,color,LV_PART_MAIN);
@@ -119,78 +115,217 @@ void updateGPS(){
 
 // ====== Garden value ======
 void updateGarden(int amount){
-  if(amount<0 && garden<=0) return;
+  if(amount<0 && garden<=1) return;
   garden += amount;
-  if(garden<0) garden=0;
+  if(garden<0) garden=1;
   char buf[8]; sprintf(buf,"%d",garden); lv_label_set_text(ui_GardenValue,buf);
 }
 
-// ====== Save Points ======
-void uploadPointData(int pointNum, int gardenID, float lat, float lng){
-  if(WiFi.status()!=WL_CONNECTED) return;
-  HTTPClient http; http.begin(apiPointUrl.c_str()); http.addHeader("Content-Type","application/json");
-  StaticJsonDocument<256> doc;
-  doc["device_id"]="esp32s3_01"; doc["garden_id"]=gardenID;
-  doc["point_no"]=pointNum; doc["latitude"]=lat; doc["longitude"]=lng;
-  doc["timestamp"]=millis();
-  String jsonData; serializeJson(doc,jsonData);
-  int code = http.POST(jsonData); http.end();
-  if(code>0) Serial.printf("Uploaded Point %d Garden %d\n",pointNum,gardenID);
+// ====== Grid ======
+int getGridIndex(float lat, float lng, float latNW, float lngNW, float latSE, float lngSE){
+  float latStep = (latNW - latSE) / 10.0;
+  float lngStep = (lngSE - lngNW) / 10.0;
+  int row = (int)((latNW - lat) / latStep);
+  int col = (int)((lng - lngNW) / lngStep);
+  row = constrain(row,0,9);
+  col = constrain(col,0,9);
+  return row * 10 + col + 1;
 }
 
-void savePoint(int pointNum){
-//   if(!gps.location.isValid()) { Serial.println("No GPS fix"); return; }
-  prefs.begin("garden", false);
-  float latsim[] = {14.044,14.044,14.042,14.042};
-  float lngsim[] = {100.610,100.615,100.615,100.610};
-  float lat = latsim[pointNum-1];
-  float lng = lngsim[pointNum-1];
-//   float lat = gps.location.lat();
-//   float lng = gps.location.lng();
-  int gardenID = garden;
-  String keyLat = "point"+String(pointNum)+"_lat";
-  String keyLng = "point"+String(pointNum)+"_lng";
-  prefs.putFloat(keyLat.c_str(),lat);
-  prefs.putFloat(keyLng.c_str(),lng);
-  prefs.putInt("garden_id",gardenID);
+// ====== NVS helpers ======
+void appendPointToNVS(int pointNum, int gardenID, float lat, float lng){
+  prefs.begin("points_log", false);
+  String existing = prefs.getString("log","[]");
+  DynamicJsonDocument doc(4096);
+  deserializeJson(doc, existing);
+  JsonArray arr = doc.as<JsonArray>();
+
+  for(int i = arr.size()-1; i >= 0; i--){
+    JsonObject obj = arr[i].as<JsonObject>();
+    if(obj["garden_id"] == gardenID && obj["point_no"] == pointNum){
+      arr.remove(i);
+    }
+  }
+
+  JsonObject item = arr.createNestedObject();
+  item["garden_id"] = gardenID;
+  item["point_no"] = pointNum;
+  item["latitude"] = lat;
+  item["longitude"] = lng;
+
+  String out; serializeJson(doc, out);
+  prefs.putString("log", out);
   prefs.end();
-  Serial.printf("Saved Point %d Garden %d: %.6f,%.6f\n",pointNum,gardenID,lat,lng);
-  if(WiFi.status()==WL_CONNECTED) uploadPointData(pointNum,gardenID,lat,lng);
 }
 
-// ====== Save Color ======
+void calculateGardenBoundaries(){
+  prefs.begin("points_log", true);
+  String existing = prefs.getString("log","[]");
+  prefs.end();
+
+  DynamicJsonDocument doc(4096);
+  if(deserializeJson(doc, existing) != DeserializationError::Ok) return;
+  JsonArray arr = doc.as<JsonArray>();
+
+  if(arr.size() < 4) return; // ต้องมีครบ 4 จุดก่อน
+
+  float minLat = 999, maxLat = -999, minLng = 999, maxLng = -999;
+  for(JsonObject obj : arr){
+    if(obj["garden_id"] == garden){
+      float lat = obj["latitude"];
+      float lng = obj["longitude"];
+      if(lat < minLat) minLat = lat;
+      if(lat > maxLat) maxLat = lat;
+      if(lng < minLng) minLng = lng;
+      if(lng > maxLng) maxLng = lng;
+    }
+  }
+
+  gardenLatNW = maxLat;
+  gardenLngNW = minLng;
+  gardenLatSE = minLat;
+  gardenLngSE = maxLng;
+
+  Serial.printf("✅ Updated boundaries Garden %d: NW(%.6f, %.6f) SE(%.6f, %.6f)\n",
+    garden, gardenLatNW, gardenLngNW, gardenLatSE, gardenLngSE);
+}
+
+// ====== Save Point ======
+void savePoint(int pointNum){
+  if(!gps.location.isValid()){
+    Serial.println("No GPS fix — can't save point!");
+    return;
+  }
+  float lat = gps.location.lat();
+  float lng = gps.location.lng();
+  appendPointToNVS(pointNum,garden,lat,lng);
+  Serial.printf("Saved Point %d Garden %d: %.6f,%.6f\n",pointNum,garden,lat,lng);
+  calculateGardenBoundaries();
+}
+
+// ====== Color ======
 void appendColorToNVS(float r,float g,float b,float lat,float lng,unsigned long ts){
   prefs.begin("color_log", false);
   String existing = prefs.getString("log","[]");
-  DynamicJsonDocument doc(8192); deserializeJson(doc,existing); JsonArray arr=doc.as<JsonArray>();
+  DynamicJsonDocument doc(8192); 
+  deserializeJson(doc, existing);
+  JsonArray arr = doc.as<JsonArray>();
+
+  int cellIndex = getGridIndex(lat, lng, gardenLatNW, gardenLngNW, gardenLatSE, gardenLngSE);
+
+  for(int i = arr.size()-1; i >= 0; i--){
+    JsonObject obj = arr[i].as<JsonObject>();
+    if(obj["garden_id"] == garden && obj["cell_index"] == cellIndex){
+      arr.remove(i);
+    }
+  }
+
   JsonObject item = arr.createNestedObject();
-  item["device_id"]="esp32s3_01"; item["garden_id"]=garden;
-  item["latitude"]=lat; item["longitude"]=lng;
-  item["r"]=(int)r; item["g"]=(int)g; item["b"]=(int)b; item["ts"]=ts;
-  String out; serializeJson(doc,out);
-  prefs.putString("log",out); prefs.end();
+  item["device_id"] = "esp32s3_01";
+  item["garden_id"] = garden;
+  item["latitude"] = lat;
+  item["longitude"] = lng;
+  item["r"] = (int)r;
+  item["g"] = (int)g;
+  item["b"] = (int)b;
+  item["ts"] = ts;
+  item["cell_index"] = cellIndex;
+
+  String out; 
+  serializeJson(doc, out);
+  prefs.putString("log", out);
+  prefs.end();
 }
 
-void uploadSingleColor(JsonObject obj){
-  if(WiFi.status()!=WL_CONNECTED) return;
-  HTTPClient http; http.begin(apiColorUrl.c_str()); http.addHeader("Content-Type","application/json");
+void saveColorData() {
+  if (!gps.location.isValid()) {
+    showStatusMessage("No GPS fix — Can't save color");
+    return;
+  }
+
+  unsigned long ts = millis();
+  appendColorToNVS(currentR, currentG, currentB, currentLat, currentLng, ts);
+  showStatusMessage("Color saved successfully!");
+}
+
+
+// ====== Upload ======
+bool uploadSinglePoint(JsonObject obj){
+  if(WiFi.status() != WL_CONNECTED) return false;
+  HTTPClient http; 
+  http.begin(apiPointUrl.c_str()); 
+  http.setTimeout(2000);
+  http.addHeader("Content-Type","application/json");
   String payload; serializeJson(obj,payload);
-  int code = http.POST(payload); http.end();
-  if(code>0) Serial.println("Uploaded color data");
+  int code = http.POST(payload);
+  http.end();
+  
+  return (code > 0);
 }
 
-void uploadQueuedColors(){
+bool uploadSingleColor(JsonObject obj){
+  if(WiFi.status() != WL_CONNECTED) return false;
+  HTTPClient http; 
+  http.begin(apiColorUrl.c_str()); 
+  http.setTimeout(2000);
+  http.addHeader("Content-Type","application/json");
+  
+  float lat = obj["latitude"];
+  float lng = obj["longitude"];
+  obj["cell_index"] = getGridIndex(lat,lng,gardenLatNW,gardenLngNW,gardenLatSE,gardenLngSE);
+
+  String payload; serializeJson(obj,payload);
+  int code = http.POST(payload);
+  http.end();
+  
+  return (code > 0);
+}
+
+void uploadQueuedData(){
+  prefs.begin("points_log", true);
+  String existingPoints = prefs.getString("log","[]");
+  prefs.end();
+  DynamicJsonDocument docPoints(4096);
+  if(deserializeJson(docPoints, existingPoints) != DeserializationError::Ok) return;
+  JsonArray arrPoints = docPoints.as<JsonArray>();
+  for(int i=0;i<arrPoints.size();i++) uploadSinglePoint(arrPoints[i]);
+
   prefs.begin("color_log", true);
-  String existing = prefs.getString("log","[]"); prefs.end();
-  DynamicJsonDocument doc(8192); deserializeJson(doc,existing); JsonArray arr=doc.as<JsonArray>();
-  for(size_t i=0;i<arr.size();i++){ uploadSingleColor(arr[i]); }
+  String existingColors = prefs.getString("log","[]");
+  prefs.end();
+  DynamicJsonDocument docColors(8192);
+  if(deserializeJson(docColors, existingColors) != DeserializationError::Ok) return;
+  JsonArray arrColors = docColors.as<JsonArray>();
+  for(int i=0;i<arrColors.size();i++) uploadSingleColor(arrColors[i]);
 }
 
-// Save Color button
-void saveColorData(){
-  unsigned long ts=millis();
-  appendColorToNVS(currentR,currentG,currentB,currentLat,currentLng,ts);
-  if(WiFi.status()==WL_CONNECTED) uploadQueuedColors();
+// ====== TextArea update ======
+void updateDataValueTextArea(){
+  prefs.begin("points_log", true);
+  String points = prefs.getString("log","[]");
+  prefs.end();
+
+  prefs.begin("color_log", true);
+  String colors = prefs.getString("log","[]");
+  prefs.end();
+
+  String combined = "{\n\"points\": " + points + ",\n\"colors\": " + colors + "\n}";
+  lv_textarea_set_text(ui_DataValue, combined.c_str());
+  lv_obj_invalidate(ui_DataValue);
+}
+
+// ====== Clear Data ======
+void clearAllData(){
+  prefs.begin("points_log", false); prefs.clear(); prefs.end();
+  prefs.begin("color_log", false); prefs.clear(); prefs.end();
+  updateDataValueTextArea();
+  Serial.println("All NVS data cleared");
+}
+void showStatusMessage(const char* message) {
+  // แสดงข้อความใน TextArea ที่มีอยู่ (ไม่ยุ่งกับไฟล์ ui)
+  lv_textarea_set_text(ui_DataValue, message);
+  lv_obj_invalidate(ui_DataValue);
+  Serial.println(message);
 }
 
 // ====== Setup ======
@@ -209,11 +344,17 @@ void setup(){
   if(!tcs.begin()){ Serial.println("No TCS34725 found"); while(1); }
   prefs.begin("init",false); prefs.end();
   WiFi.begin(ssid,password);
+  updateDataValueTextArea();
 }
 
 // ====== Loop ======
+unsigned long lastUploadAttempt = 0;
+const unsigned long uploadInterval = 30000; // 30 วินาที
+
 void loop(){
-  activateFlag = lv_obj_has_state(ui_ActivateButton, LV_STATE_CHECKED); if(activateFlag) updateRGB();
+  activateFlag = lv_obj_has_state(ui_ActivateButton, LV_STATE_CHECKED); 
+  if(activateFlag) updateRGB();
+
   bool currPlus = lv_obj_has_state(ui_Addbutton, LV_STATE_PRESSED);
   bool currMinus = lv_obj_has_state(ui_Minusbutton, LV_STATE_PRESSED);
   bool SaveColor = lv_obj_has_state(ui_ColorSaveButton, LV_STATE_PRESSED);
@@ -221,28 +362,30 @@ void loop(){
   bool SaveButton2 = lv_obj_has_state(ui_Point2SaveButton, LV_STATE_PRESSED);
   bool SaveButton3 = lv_obj_has_state(ui_Point3SaveButton, LV_STATE_PRESSED);
   bool SaveButton4 = lv_obj_has_state(ui_Point4SaveButton, LV_STATE_PRESSED);
+  bool ClearData = lv_obj_has_state(ui_ClearDataButton, LV_STATE_PRESSED);
 
   if(currPlus && !prevPlus) updateGarden(1);
   if(currMinus && !prevMinus) updateGarden(-1);
   prevPlus=currPlus; prevMinus=currMinus;
 
-  while(gpsSerial.available()>0) gps.encode(gpsSerial.read());
   if(gps.location.isUpdated()) updateGPS();
 
-  static bool prevSave1=false,prevSave2=false,prevSave3=false,prevSave4=false,prevSaveColor=false;
-  if(SaveButton1 && !prevSave1) savePoint(1);
-  if(SaveButton2 && !prevSave2) savePoint(2);
-  if(SaveButton3 && !prevSave3) savePoint(3);
-  if(SaveButton4 && !prevSave4) savePoint(4);
-  if(SaveColor && !prevSaveColor) saveColorData();
-  prevSave1=SaveButton1; prevSave2=SaveButton2; prevSave3=SaveButton3; prevSave4=SaveButton4; prevSaveColor=SaveColor;
+  static bool prevSave1=false,prevSave2=false,prevSave3=false,prevSave4=false,prevSaveColor=false,prevClear=false;
+  if(SaveButton1 && !prevSave1){ savePoint(1); updateDataValueTextArea(); }
+  if(SaveButton2 && !prevSave2){ savePoint(2); updateDataValueTextArea(); }
+  if(SaveButton3 && !prevSave3){ savePoint(3); updateDataValueTextArea(); }
+  if(SaveButton4 && !prevSave4){ savePoint(4); updateDataValueTextArea(); }
+  if(SaveColor && !prevSaveColor){ saveColorData(); updateDataValueTextArea(); }
+  if(ClearData && !prevClear) clearAllData();
+  prevSave1=SaveButton1; prevSave2=SaveButton2; prevSave3=SaveButton3; prevSave4=SaveButton4;
+  prevSaveColor=SaveColor; prevClear=ClearData;
 
-  static unsigned long lastWifiCheck=0;
-  if(millis()-lastWifiCheck>5000){
-    lastWifiCheck=millis();
-    if(WiFi.status()!=WL_CONNECTED) WiFi.reconnect();
-    else uploadQueuedColors();
+  if(WiFi.status() == WL_CONNECTED && millis()-lastUploadAttempt > uploadInterval){
+      lastUploadAttempt = millis();
+      uploadQueuedData();
+      updateDataValueTextArea();
   }
 
-  lv_timer_handler(); delay(5);
+  lv_timer_handler(); 
+  delay(5);
 }

@@ -8,6 +8,9 @@
 lv_obj_t * ui_Data = NULL;
 lv_obj_t * ui_Button4 = NULL;
 lv_obj_t * ui_Label4 = NULL;
+lv_obj_t * ui_DataValue = NULL;
+lv_obj_t * ui_ClearDataButton = NULL;
+lv_obj_t * ui_DataClearLabel = NULL;
 // event funtions
 void ui_event_Button4(lv_event_t * e)
 {
@@ -42,6 +45,30 @@ void ui_Data_screen_init(void)
     lv_obj_set_align(ui_Label4, LV_ALIGN_CENTER);
     lv_label_set_text(ui_Label4, "<<");
 
+    ui_DataValue = lv_textarea_create(ui_Data);
+    lv_obj_set_width(ui_DataValue, 315);
+    lv_obj_set_height(ui_DataValue, 228);
+    lv_obj_set_x(ui_DataValue, -67);
+    lv_obj_set_y(ui_DataValue, 16);
+    lv_obj_set_align(ui_DataValue, LV_ALIGN_CENTER);
+    lv_textarea_set_placeholder_text(ui_DataValue, "Placeholder...");
+    lv_obj_set_style_text_font(ui_DataValue, &lv_font_montserrat_10, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    ui_ClearDataButton = lv_btn_create(ui_Data);
+    lv_obj_set_width(ui_ClearDataButton, 100);
+    lv_obj_set_height(ui_ClearDataButton, 50);
+    lv_obj_set_x(ui_ClearDataButton, 162);
+    lv_obj_set_y(ui_ClearDataButton, 94);
+    lv_obj_set_align(ui_ClearDataButton, LV_ALIGN_CENTER);
+    lv_obj_add_flag(ui_ClearDataButton, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
+    lv_obj_clear_flag(ui_ClearDataButton, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+
+    ui_DataClearLabel = lv_label_create(ui_ClearDataButton);
+    lv_obj_set_width(ui_DataClearLabel, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_DataClearLabel, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_align(ui_DataClearLabel, LV_ALIGN_CENTER);
+    lv_label_set_text(ui_DataClearLabel, "DataClear");
+
     lv_obj_add_event_cb(ui_Button4, ui_event_Button4, LV_EVENT_ALL, NULL);
 
 }
@@ -54,5 +81,8 @@ void ui_Data_screen_destroy(void)
     ui_Data = NULL;
     ui_Button4 = NULL;
     ui_Label4 = NULL;
+    ui_DataValue = NULL;
+    ui_ClearDataButton = NULL;
+    ui_DataClearLabel = NULL;
 
 }

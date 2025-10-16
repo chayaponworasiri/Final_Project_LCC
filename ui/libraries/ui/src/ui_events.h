@@ -11,8 +11,6 @@ extern "C" {
 #endif
 
 void ui_event_LockButton(lv_event_t * e);
-void BtnMinus_event_handler(lv_event_t * e);
-void BtnPlus_event_handler(lv_event_t * e);
 
 #ifdef __cplusplus
 } /*extern "C"*/

@@ -17,6 +17,9 @@ extern lv_obj_t * ui_Data;
 extern void ui_event_Button4(lv_event_t * e);
 extern lv_obj_t * ui_Button4;
 extern lv_obj_t * ui_Label4;
+extern lv_obj_t * ui_DataValue;
+extern lv_obj_t * ui_ClearDataButton;
+extern lv_obj_t * ui_DataClearLabel;
 // CUSTOM VARIABLES
 
 #ifdef __cplusplus

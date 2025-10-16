@@ -1,0 +1,1030 @@
+{
+  "points": [
+    {
+      "garden_id": 1,
+      "point_no": 1,
+      "latitude": 14.045,
+      "longitude": 100.61
+    },
+    {
+      "garden_id": 1,
+      "point_no": 2,
+      "latitude": 14.045,
+      "longitude": 100.615
+    },
+    {
+      "garden_id": 1,
+      "point_no": 3,
+      "latitude": 14.042,
+      "longitude": 100.615
+    },
+    {
+      "garden_id": 1,
+      "point_no": 4,
+      "latitude": 14.042,
+      "longitude": 100.61
+    }
+  ],
+  "colors": [
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.045,
+      "longitude": 100.61,
+      "r": 153,
+      "g": 221,
+      "b": 84,
+      "ts": 1841355
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.045,
+      "longitude": 100.6105,
+      "r": 224,
+      "g": 198,
+      "b": 42,
+      "ts": 1284204
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.045,
+      "longitude": 100.611,
+      "r": 201,
+      "g": 189,
+      "b": 42,
+      "ts": 1484054
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.045,
+      "longitude": 100.6115,
+      "r": 253,
+      "g": 180,
+      "b": 19,
+      "ts": 1401108
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.045,
+      "longitude": 100.612,
+      "r": 171,
+      "g": 179,
+      "b": 58,
+      "ts": 1875785
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.045,
+      "longitude": 100.6125,
+      "r": 241,
+      "g": 193,
+      "b": 29,
+      "ts": 1080343
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.045,
+      "longitude": 100.613,
+      "r": 155,
+      "g": 154,
+      "b": 56,
+      "ts": 1420959
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.045,
+      "longitude": 100.6135,
+      "r": 173,
+      "g": 213,
+      "b": 43,
+      "ts": 1064695
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.045,
+      "longitude": 100.614,
+      "r": 223,
+      "g": 229,
+      "b": 12,
+      "ts": 1450180
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.045,
+      "longitude": 100.6145,
+      "r": 187,
+      "g": 169,
+      "b": 83,
+      "ts": 1990377
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0447,
+      "longitude": 100.61,
+      "r": 204,
+      "g": 250,
+      "b": 49,
+      "ts": 1137327
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0447,
+      "longitude": 100.6105,
+      "r": 227,
+      "g": 222,
+      "b": 38,
+      "ts": 1328639
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0447,
+      "longitude": 100.611,
+      "r": 226,
+      "g": 227,
+      "b": 9,
+      "ts": 1435233
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0447,
+      "longitude": 100.6115,
+      "r": 182,
+      "g": 187,
+      "b": 70,
+      "ts": 1490192
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0447,
+      "longitude": 100.612,
+      "r": 215,
+      "g": 156,
+      "b": 22,
+      "ts": 1142569
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0447,
+      "longitude": 100.6125,
+      "r": 201,
+      "g": 254,
+      "b": 37,
+      "ts": 1888974
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0447,
+      "longitude": 100.613,
+      "r": 152,
+      "g": 246,
+      "b": 59,
+      "ts": 1203521
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0447,
+      "longitude": 100.6135,
+      "r": 252,
+      "g": 180,
+      "b": 64,
+      "ts": 1024469
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0447,
+      "longitude": 100.614,
+      "r": 252,
+      "g": 246,
+      "b": 50,
+      "ts": 1983037
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0447,
+      "longitude": 100.6145,
+      "r": 184,
+      "g": 225,
+      "b": 26,
+      "ts": 1977425
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0444,
+      "longitude": 100.61,
+      "r": 166,
+      "g": 206,
+      "b": 21,
+      "ts": 1239120
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0444,
+      "longitude": 100.6105,
+      "r": 214,
+      "g": 160,
+      "b": 83,
+      "ts": 1226519
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0444,
+      "longitude": 100.611,
+      "r": 177,
+      "g": 189,
+      "b": 84,
+      "ts": 1621537
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0444,
+      "longitude": 100.6115,
+      "r": 172,
+      "g": 151,
+      "b": 46,
+      "ts": 1387051
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0444,
+      "longitude": 100.612,
+      "r": 151,
+      "g": 231,
+      "b": 26,
+      "ts": 1679733
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0444,
+      "longitude": 100.6125,
+      "r": 205,
+      "g": 154,
+      "b": 43,
+      "ts": 1949997
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0444,
+      "longitude": 100.613,
+      "r": 152,
+      "g": 168,
+      "b": 2,
+      "ts": 1365629
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0444,
+      "longitude": 100.6135,
+      "r": 209,
+      "g": 164,
+      "b": 29,
+      "ts": 1841233
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0444,
+      "longitude": 100.614,
+      "r": 159,
+      "g": 196,
+      "b": 53,
+      "ts": 1009065
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0444,
+      "longitude": 100.6145,
+      "r": 221,
+      "g": 161,
+      "b": 89,
+      "ts": 1023672
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0441,
+      "longitude": 100.61,
+      "r": 182,
+      "g": 165,
+      "b": 79,
+      "ts": 1478819
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0441,
+      "longitude": 100.6105,
+      "r": 248,
+      "g": 194,
+      "b": 54,
+      "ts": 1289583
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0441,
+      "longitude": 100.611,
+      "r": 212,
+      "g": 209,
+      "b": 5,
+      "ts": 1336435
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0441,
+      "longitude": 100.6115,
+      "r": 239,
+      "g": 183,
+      "b": 97,
+      "ts": 1949998
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0441,
+      "longitude": 100.612,
+      "r": 185,
+      "g": 227,
+      "b": 47,
+      "ts": 1128230
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0441,
+      "longitude": 100.6125,
+      "r": 186,
+      "g": 194,
+      "b": 45,
+      "ts": 1257978
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0441,
+      "longitude": 100.613,
+      "r": 157,
+      "g": 168,
+      "b": 49,
+      "ts": 1616678
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0441,
+      "longitude": 100.6135,
+      "r": 155,
+      "g": 212,
+      "b": 88,
+      "ts": 1751546
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0441,
+      "longitude": 100.614,
+      "r": 150,
+      "g": 221,
+      "b": 95,
+      "ts": 1659402
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0441,
+      "longitude": 100.6145,
+      "r": 218,
+      "g": 213,
+      "b": 62,
+      "ts": 1163794
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0438,
+      "longitude": 100.61,
+      "r": 213,
+      "g": 254,
+      "b": 60,
+      "ts": 1551815
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0438,
+      "longitude": 100.6105,
+      "r": 196,
+      "g": 161,
+      "b": 52,
+      "ts": 1243536
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0438,
+      "longitude": 100.611,
+      "r": 229,
+      "g": 185,
+      "b": 75,
+      "ts": 1098051
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0438,
+      "longitude": 100.6115,
+      "r": 213,
+      "g": 254,
+      "b": 18,
+      "ts": 1847732
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0438,
+      "longitude": 100.612,
+      "r": 206,
+      "g": 172,
+      "b": 12,
+      "ts": 1470113
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0438,
+      "longitude": 100.6125,
+      "r": 235,
+      "g": 201,
+      "b": 51,
+      "ts": 1721341
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0438,
+      "longitude": 100.613,
+      "r": 255,
+      "g": 213,
+      "b": 63,
+      "ts": 1698206
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0438,
+      "longitude": 100.6135,
+      "r": 190,
+      "g": 214,
+      "b": 20,
+      "ts": 1527691
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0438,
+      "longitude": 100.614,
+      "r": 251,
+      "g": 219,
+      "b": 71,
+      "ts": 1669395
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0438,
+      "longitude": 100.6145,
+      "r": 169,
+      "g": 228,
+      "b": 38,
+      "ts": 1836242
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0435,
+      "longitude": 100.61,
+      "r": 153,
+      "g": 216,
+      "b": 26,
+      "ts": 1645331
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0435,
+      "longitude": 100.6105,
+      "r": 229,
+      "g": 153,
+      "b": 84,
+      "ts": 1569779
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0435,
+      "longitude": 100.611,
+      "r": 213,
+      "g": 172,
+      "b": 34,
+      "ts": 1085124
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0435,
+      "longitude": 100.6115,
+      "r": 152,
+      "g": 171,
+      "b": 10,
+      "ts": 1173808
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0435,
+      "longitude": 100.612,
+      "r": 235,
+      "g": 160,
+      "b": 96,
+      "ts": 1920523
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0435,
+      "longitude": 100.6125,
+      "r": 156,
+      "g": 157,
+      "b": 52,
+      "ts": 1022504
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0435,
+      "longitude": 100.613,
+      "r": 224,
+      "g": 247,
+      "b": 41,
+      "ts": 1775567
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0435,
+      "longitude": 100.6135,
+      "r": 229,
+      "g": 240,
+      "b": 10,
+      "ts": 1026136
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0435,
+      "longitude": 100.614,
+      "r": 211,
+      "g": 167,
+      "b": 43,
+      "ts": 1166278
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0435,
+      "longitude": 100.6145,
+      "r": 234,
+      "g": 198,
+      "b": 82,
+      "ts": 1872974
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0432,
+      "longitude": 100.61,
+      "r": 181,
+      "g": 237,
+      "b": 63,
+      "ts": 1714320
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0432,
+      "longitude": 100.6105,
+      "r": 167,
+      "g": 189,
+      "b": 70,
+      "ts": 1816230
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0432,
+      "longitude": 100.611,
+      "r": 162,
+      "g": 243,
+      "b": 82,
+      "ts": 1735373
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0432,
+      "longitude": 100.6115,
+      "r": 227,
+      "g": 225,
+      "b": 82,
+      "ts": 1949577
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0432,
+      "longitude": 100.612,
+      "r": 234,
+      "g": 151,
+      "b": 33,
+      "ts": 1078345
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0432,
+      "longitude": 100.6125,
+      "r": 193,
+      "g": 244,
+      "b": 96,
+      "ts": 1812520
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0432,
+      "longitude": 100.613,
+      "r": 223,
+      "g": 206,
+      "b": 88,
+      "ts": 1849869
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0432,
+      "longitude": 100.6135,
+      "r": 209,
+      "g": 165,
+      "b": 58,
+      "ts": 1709289
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0432,
+      "longitude": 100.614,
+      "r": 223,
+      "g": 188,
+      "b": 56,
+      "ts": 1341660
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0432,
+      "longitude": 100.6145,
+      "r": 196,
+      "g": 204,
+      "b": 86,
+      "ts": 1697542
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0429,
+      "longitude": 100.61,
+      "r": 150,
+      "g": 197,
+      "b": 31,
+      "ts": 1323280
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0429,
+      "longitude": 100.6105,
+      "r": 230,
+      "g": 215,
+      "b": 62,
+      "ts": 1982751
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0429,
+      "longitude": 100.611,
+      "r": 215,
+      "g": 159,
+      "b": 51,
+      "ts": 1880416
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0429,
+      "longitude": 100.6115,
+      "r": 167,
+      "g": 214,
+      "b": 33,
+      "ts": 1576317
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0429,
+      "longitude": 100.612,
+      "r": 171,
+      "g": 182,
+      "b": 28,
+      "ts": 1972304
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0429,
+      "longitude": 100.6125,
+      "r": 217,
+      "g": 197,
+      "b": 32,
+      "ts": 1035346
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0429,
+      "longitude": 100.613,
+      "r": 172,
+      "g": 166,
+      "b": 53,
+      "ts": 1409557
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0429,
+      "longitude": 100.6135,
+      "r": 210,
+      "g": 155,
+      "b": 71,
+      "ts": 1560067
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0429,
+      "longitude": 100.614,
+      "r": 234,
+      "g": 233,
+      "b": 4,
+      "ts": 1590794
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0429,
+      "longitude": 100.6145,
+      "r": 165,
+      "g": 251,
+      "b": 61,
+      "ts": 1006860
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0426,
+      "longitude": 100.61,
+      "r": 214,
+      "g": 164,
+      "b": 75,
+      "ts": 1042572
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0426,
+      "longitude": 100.6105,
+      "r": 213,
+      "g": 216,
+      "b": 38,
+      "ts": 1385320
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0426,
+      "longitude": 100.611,
+      "r": 188,
+      "g": 209,
+      "b": 55,
+      "ts": 1152733
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0426,
+      "longitude": 100.6115,
+      "r": 249,
+      "g": 214,
+      "b": 89,
+      "ts": 1493390
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0426,
+      "longitude": 100.612,
+      "r": 231,
+      "g": 192,
+      "b": 67,
+      "ts": 1554418
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0426,
+      "longitude": 100.6125,
+      "r": 231,
+      "g": 240,
+      "b": 4,
+      "ts": 1799826
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0426,
+      "longitude": 100.613,
+      "r": 219,
+      "g": 194,
+      "b": 39,
+      "ts": 1888821
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0426,
+      "longitude": 100.6135,
+      "r": 224,
+      "g": 218,
+      "b": 94,
+      "ts": 1465664
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0426,
+      "longitude": 100.614,
+      "r": 245,
+      "g": 150,
+      "b": 100,
+      "ts": 1493551
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0426,
+      "longitude": 100.6145,
+      "r": 188,
+      "g": 184,
+      "b": 9,
+      "ts": 1452199
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0423,
+      "longitude": 100.61,
+      "r": 172,
+      "g": 225,
+      "b": 3,
+      "ts": 1709930
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0423,
+      "longitude": 100.6105,
+      "r": 162,
+      "g": 213,
+      "b": 50,
+      "ts": 1838430
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0423,
+      "longitude": 100.611,
+      "r": 150,
+      "g": 171,
+      "b": 77,
+      "ts": 1932248
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0423,
+      "longitude": 100.6115,
+      "r": 232,
+      "g": 212,
+      "b": 62,
+      "ts": 1053912
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0423,
+      "longitude": 100.612,
+      "r": 188,
+      "g": 215,
+      "b": 88,
+      "ts": 1965001
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0423,
+      "longitude": 100.6125,
+      "r": 172,
+      "g": 221,
+      "b": 76,
+      "ts": 1391348
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0423,
+      "longitude": 100.613,
+      "r": 238,
+      "g": 213,
+      "b": 72,
+      "ts": 1660921
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0423,
+      "longitude": 100.6135,
+      "r": 215,
+      "g": 219,
+      "b": 55,
+      "ts": 1275350
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0423,
+      "longitude": 100.614,
+      "r": 233,
+      "g": 241,
+      "b": 2,
+      "ts": 1780447
+    },
+    {
+      "device_id": "esp32s3_01",
+      "garden_id": 1,
+      "latitude": 14.0423,
+      "longitude": 100.6145,
+      "r": 191,
+      "g": 194,
+      "b": 24,
+      "ts": 1271902
+    }
+  ]
+}
