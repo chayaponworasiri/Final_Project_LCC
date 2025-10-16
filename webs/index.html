@@ -1,194 +1,87 @@
-<!-- File: index.html (เวอร์ชัน Final: Dashboard + Real-time Logic) -->
+<!-- File: index.html (ฉบับสมบูรณ์ - เพิ่ม Logic แสดงผล Grid) -->
 <!DOCTYPE html>
 <html lang="th">
 <head>
     <meta charset="UTF-8">
     <title>Smart Farm Dashboard</title>
     <style>
-        /* --- Global Styles --- */
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            margin: 0;
-            background-color: #f4f7fa; /* สีพื้นหลังเว็บโดยรวม */
-            color: #333;
-            overflow: hidden; /* ป้องกันการ scroll หน้าหลัก */
-        }
-        .main-container {
-            display: flex;
-            height: 100vh;
-        }
-
-        /* --- Top Bar --- */
-        .top-bar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 60px;
-            background-color: #ffffff;
-            border-bottom: 1px solid #e0e0e0;
-            display: flex;
-            align-items: center;
-            padding: 0 24px;
-            z-index: 1000;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        }
-        .top-bar h1 {
-            font-size: 1.4em;
-            margin: 0;
-            color: #1a73e8;
-        }
-
-        /* --- Side Bar --- */
-        .side-bar {
-            width: 240px;
-            background-color: #ffffff;
-            border-right: 1px solid #e0e0e0;
-            padding-top: 80px;
-            box-shadow: 2px 0 5px rgba(0,0,0,0.05);
-            flex-shrink: 0;
-            z-index: 900;
-        }
-        .side-bar h2 {
-            padding: 0 24px;
-            font-size: 1.0em;
-            color: #5f6368;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        .side-bar ul {
-            list-style-type: none;
-            padding: 0;
-            margin: 0;
-        }
-        .side-bar li {
-            padding: 15px 24px;
-            cursor: pointer;
-            border-left: 4px solid transparent;
-            transition: all 0.2s ease-in-out;
-        }
-        .side-bar li:hover {
-            background-color: #f1f3f4;
-        }
-        .side-bar li.active {
-            background-color: #e8f0fe;
-            border-left-color: #1967d2;
-            font-weight: 600;
-            color: #1967d2;
-        }
-
-        /* --- Content Area --- */
-        .content-area {
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            padding: 80px 20px 20px 20px;
-            gap: 20px;
-            overflow: hidden;
-        }
-        #map-container {
-            flex-basis: 60%;
-            width: 100%;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-        #map {
-            height: 100%;
-            width: 100%;
-        }
-        #grid-container {
-            flex-basis: 40%;
-            background-color: #ffffff;
-            padding: 20px;
-            overflow-y: auto;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-        #grid-container h3 {
-            margin-top: 0;
-            margin-bottom: 15px;
-            font-size: 1.1em;
-            font-weight: 600;
-            color: #3c4043;
-        }
-        .data-grid {
-            display: grid;
-            grid-template-columns: repeat(10, 1fr);
-            gap: 6px;
-        }
-        .grid-cell {
-            width: 100%;
-            padding-bottom: 100%;
-            background-color: #eceff1;
-            border-radius: 4px;
-            position: relative;
-            transition: background-color 0.3s;
-        }
-        .grid-cell span {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: rgba(0,0,0,0.4);
-            font-size: 0.75em;
-        }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; margin: 0; background-color: #f4f7fa; color: #333; overflow: hidden; }
+        .main-container { display: flex; height: 100vh; }
+        .top-bar { position: fixed; top: 0; left: 0; width: 100%; height: 60px; background-color: #ffffff; border-bottom: 1px solid #e0e0e0; display: flex; align-items: center; padding: 0 24px; z-index: 1000; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .top-bar h1 { font-size: 1.4em; margin: 0; color: #1a73e8; }
+        .side-bar { width: 240px; background-color: #ffffff; border-right: 1px solid #e0e0e0; padding-top: 80px; box-shadow: 2px 0 5px rgba(0,0,0,0.05); flex-shrink: 0; z-index: 900; }
+        .side-bar h2 { padding: 0 24px; font-size: 1.0em; color: #5f6368; text-transform: uppercase; letter-spacing: 0.5px; }
+        .side-bar ul { list-style-type: none; padding: 0; margin: 0; }
+        .side-bar li { display: flex; justify-content: space-between; align-items: center; padding: 15px 24px; cursor: pointer; border-left: 4px solid transparent; transition: all 0.2s ease-in-out; }
+        .side-bar li:hover { background-color: #f1f3f4; }
+        .side-bar li.active { background-color: #e8f0fe; border-left-color: #1967d2; font-weight: 600; color: #1967d2; }
+        .delete-btn { font-size: 1.2em; color: #888; padding: 5px; border-radius: 50%; }
+        .delete-btn:hover { background-color: #e0e0e0; color: #d32f2f; }
+        .content-area { flex-grow: 1; display: flex; flex-direction: column; padding: 80px 20px 20px 20px; gap: 20px; overflow: hidden; }
+        #map-container { flex-basis: 70%; width: 100%; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        #map { height: 100%; width: 100%; }
+        #grid-container { flex-basis: 30%; background-color: #ffffff; padding: 20px; overflow-y: auto; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        #grid-container h3 { margin-top: 0; margin-bottom: 15px; font-size: 1.1em; font-weight: 600; color: #3c4043; }
+        .data-grid { display: grid; grid-template-columns: repeat(10, 1fr); gap: 6px; }
+        .grid-cell { width: 100%; padding-bottom: 100%; background-color: #eceff1; border-radius: 4px; position: relative; transition: background-color 0.3s; }
+        .grid-cell span { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: rgba(0,0,0,0.4); font-size: 0.75em; }
     </style>
 </head>
 <body>
-
-    <div class="top-bar">
-        <h1>Smart Rice Field Dashboard</h1>
-    </div>
-
+    <div class="top-bar"><h1>Smart Farm Dashboard</h1></div>
     <div class="main-container">
         <nav class="side-bar">
             <h2>สวนทั้งหมด</h2>
-            <ul>
-                <li id="garden1" class="active" onclick="setActiveGarden(1)">สวนที่ 1</li>
-                <li id="garden2" onclick="setActiveGarden(2)">สวนที่ 2</li>
-                <li id="garden3" onclick="setActiveGarden(3)">สวนที่ 3</li>
-                <li id="garden4" onclick="setActiveGarden(4)">สวนที่ 4</li>
-            </ul>
+            <ul id="garden-list"></ul>
         </nav>
-
         <main class="content-area">
-            <div id="map-container">
-                <div id="map"></div>
-            </div>
+            <div id="map-container"><div id="map"></div></div>
             <div id="grid-container">
-                <h3 id="grid-title">ข้อมูลค่าสี สวนที่ 1 (100 แปลงย่อย)</h3>
-                <div class="data-grid" id="data-grid">
-                    <!-- JavaScript จะสร้าง 100 ช่องกริดที่นี่ -->
-                </div>
+                <h3 id="grid-title">กรุณาเลือกสวน</h3>
+                <div class="data-grid" id="data-grid"></div>
             </div>
         </main>
     </div>
 
 <script>
     let map;
-    let activeGarden = 1; // สวนที่กำลังดูอยู่
-    const polygons = {}; // สำหรับเก็บ Object Polygon ของ Google Maps
+    let activeGardenId = null;
+    const polygons = {};
+    const gardenColors = ["#FFC107", "#2196F3", "#4CAF50", "#E91E63", "#9C27B0", "#00BCD4"];
 
-    function initMap() {
-        map = new google.maps.Map(document.getElementById("map"), {
-            center: { lat: 14.039, lng: 100.613 },
-            zoom: 16,
-            mapTypeId: 'satellite'
-        });
+    function addGardenToSidebar(garden) {
+        const list = document.getElementById('garden-list');
+        if (document.getElementById(`garden-item-${garden.garden_id}`)) return;
+        const listItem = document.createElement('li');
+        listItem.id = `garden-item-${garden.garden_id}`;
+        listItem.onclick = () => setActiveGarden(garden.garden_id);
+        const nameSpan = document.createElement('span');
+        nameSpan.innerText = `สวนที่ ${garden.garden_id}`;
+        const deleteBtn = document.createElement('span');
+        deleteBtn.className = 'delete-btn';
+        deleteBtn.innerHTML = '🗑️';
+        deleteBtn.onclick = (e) => { e.stopPropagation(); deleteGarden(garden.garden_id); };
+        listItem.appendChild(nameSpan);
+        listItem.appendChild(deleteBtn);
+        list.appendChild(listItem);
+    }
 
+    function setActiveGarden(gardenId) {
+        if (activeGardenId) document.getElementById(`garden-item-${activeGardenId}`)?.classList.remove('active');
+        document.getElementById(`garden-item-${gardenId}`)?.classList.add('active');
+        document.getElementById('grid-title').innerText = `ข้อมูลค่าสี สวนที่ ${gardenId}`;
+        activeGardenId = gardenId;
         createGridCells();
-        connectWebSocket();
     }
 
     function createGridCells() {
         const grid = document.getElementById('data-grid');
-        grid.innerHTML = ''; // เคลียร์ของเก่าทิ้งก่อน
+        grid.innerHTML = '';
+        if (!activeGardenId) return;
         for (let i = 0; i < 100; i++) {
             const cell = document.createElement('div');
             cell.className = 'grid-cell';
-            // สร้าง ID ที่มีทั้ง G_ID และ Cell_ID เพื่อไม่ให้ซ้ำกัน
-            cell.id = `g${activeGarden}-cell-${i}`; 
+            cell.id = `g${activeGardenId}-cell-${i}`;
             const cellNumber = document.createElement('span');
             cellNumber.innerText = i + 1;
             cell.appendChild(cellNumber);
@@ -196,72 +89,110 @@
         }
     }
 
-    function setActiveGarden(gardenId) {
-        // อัปเดต UI
-        document.querySelector('.side-bar li.active').classList.remove('active');
-        document.getElementById(`garden${gardenId}`).classList.add('active');
-        document.getElementById('grid-title').innerText = `ข้อมูลค่าสี สวนที่ ${gardenId} (100 แปลงย่อย)`;
-        
-        activeGarden = gardenId;
-        createGridCells(); // สร้างกริดสำหรับสวนใหม่
-        
-        // TODO: ในอนาคตอาจจะต้องร้องขอข้อมูลของสวนที่เพิ่งเลือกจากเซิร์ฟเวอร์
+    function createPolygon(garden) {
+        const gardenId = garden.garden_id;
+        if (polygons[gardenId]) {
+            polygons[gardenId].polygon.setMap(null);
+            polygons[gardenId].label.setMap(null);
+        }
+        const color = gardenColors[(gardenId - 1) % gardenColors.length];
+        const polygon = new google.maps.Polygon({
+            paths: garden.coords, strokeColor: color, strokeOpacity: 0.9, strokeWeight: 2,
+            fillColor: color, fillOpacity: 0.35, map: map
+        });
+        const label = new google.maps.Marker({
+            position: getCenterOfPolygon(polygon), map: map,
+            label: { text: `สวน ${gardenId}`, color: "white", fontSize: "14px", fontWeight: "bold" },
+            icon: { path: google.maps.SymbolPath.CIRCLE, scale: 0 }
+        });
+        polygons[gardenId] = { polygon, label };
+    }
+
+    function removeGardenFromUI(gardenId) {
+        document.getElementById(`garden-item-${gardenId}`)?.remove();
+        if (polygons[gardenId]) {
+            polygons[gardenId].polygon.setMap(null);
+            polygons[gardenId].label.setMap(null);
+            delete polygons[gardenId];
+        }
+        if (activeGardenId == gardenId) {
+            activeGardenId = null;
+            document.getElementById('grid-title').innerText = 'กรุณาเลือกสวน';
+            document.getElementById('data-grid').innerHTML = '';
+        }
+    }
+
+    function getCenterOfPolygon(polygon) {
+        const bounds = new google.maps.LatLngBounds();
+        polygon.getPath().getArray().forEach(v => bounds.extend(v));
+        return bounds.getCenter();
+    }
+
+    async function fetchAllGardens() {
+        try {
+            const response = await fetch('/api/get_all_gardens');
+            const gardens = await response.json();
+            gardens.forEach(garden => {
+                addGardenToSidebar(garden);
+                createPolygon(garden);
+            });
+            if (gardens.length > 0 && !activeGardenId) {
+                setActiveGarden(gardens[0].garden_id);
+            }
+        } catch (error) { console.error('ไม่สามารถดึงข้อมูลสวนได้:', error); }
+    }
+    
+    async function deleteGarden(gardenId) {
+        if (confirm(`คุณแน่ใจหรือไม่ที่จะลบ "สวนที่ ${gardenId}"?`)) {
+            try {
+                const response = await fetch(`/api/delete_garden/${gardenId}`, { method: 'DELETE' });
+                if (!response.ok) alert('เกิดข้อผิดพลาดในการลบสวน');
+            } catch (error) { console.error('เกิดข้อผิดพลาดในการเชื่อมต่อเพื่อลบ:', error); }
+        }
     }
 
     function connectWebSocket() {
-        const ws = new WebSocket(`ws://localhost:3000`);
-        ws.onopen = () => console.log("[หน้าเว็บ] เชื่อมต่อเซิร์ฟเวอร์สำเร็จ!");
-        
+        const ws = new WebSocket(`ws://${window.location.host}`);
+        ws.onopen = () => console.log("[WebSocket] เชื่อมต่อเซิร์ฟเวอร์สำเร็จ!");
         ws.onmessage = (event) => {
             const message = JSON.parse(event.data);
-            console.log("[หน้าเว็บ] ได้รับข้อมูลจากเซิร์ฟเวอร์:", message);
-
-            if (message.type === 'update_grid_cell') {
-                const { garden_id, cell_index, color } = message.data;
-                
-                // อัปเดตสีเฉพาะเมื่อผู้ใช้กำลังดูสวนนั้นอยู่
-                if (garden_id == activeGarden) {
-                    const cell = document.getElementById(`g${garden_id}-cell-${cell_index}`);
-                    if (cell) {
-                        cell.style.backgroundColor = `rgb(${color.r}, ${color.g}, ${color.b})`;
-                        // อาจจะซ่อนเลขตอนมีสีแล้ว
-                        cell.querySelector('span').style.display = 'none'; 
+            console.log("[WebSocket] ได้รับคำสั่ง:", message);
+            switch (message.type) {
+                case 'new_garden_added':
+                    addGardenToSidebar(message.data);
+                    createPolygon(message.data);
+                    if (!activeGardenId) setActiveGarden(message.data.garden_id);
+                    break;
+                case 'garden_deleted':
+                    removeGardenFromUI(message.data.garden_id);
+                    break;
+                // ======================================================
+                //  !!! จุดแก้ไขสำคัญ: เพิ่ม Logic การแสดงผลค่าสี !!!
+                // ======================================================
+                case 'update_grid_cell':
+                    const { garden_id, cell_index, color } = message.data;
+                    // อัปเดตสีเฉพาะเมื่อผู้ใช้กำลังดูสวนนั้นอยู่
+                    if (garden_id == activeGardenId) {
+                        const cell = document.getElementById(`g${garden_id}-cell-${cell_index}`);
+                        if (cell) {
+                            cell.style.backgroundColor = `rgb(${color.r}, ${color.g}, ${color.b})`;
+                            cell.querySelector('span').style.display = 'none'; // ซ่อนเลข
+                        }
                     }
-                }
-            }
-            else if (message.type === 'create_polygon') {
-                const { id, coords } = message.data; // id จะมาในรูปแบบ "garden1", "garden2"
-                
-                // ถ้ามี polygon เก่าของสวนนี้อยู่ ให้ลบทิ้งก่อน
-                if (polygons[id]) {
-                    polygons[id].setMap(null);
-                }
-
-                const polygon = new google.maps.Polygon({
-                    paths: coords,
-                    strokeColor: "#FFC107",
-                    strokeOpacity: 0.9,
-                    strokeWeight: 2,
-                    fillColor: "#FFC107",
-                    fillOpacity: 0.3,
-                    map: map
-                });
-
-                // เก็บ polygon ใหม่ไว้
-                polygons[id] = polygon;
+                    break;
             }
         };
+        ws.onclose = () => setTimeout(connectWebSocket, 3000);
+    }
 
-        ws.onclose = () => {
-            console.log("[หน้าเว็บ] การเชื่อมต่อถูกตัดขาด! กำลังพยายามเชื่อมต่อใหม่ใน 3 วินาที...");
-            setTimeout(connectWebSocket, 3000);
-        };
+    async function initMap() {
+        map = new google.maps.Map(document.getElementById("map"), {
+            center: { lat: 14.039, lng: 100.613 }, zoom: 16, mapTypeId: 'satellite'
+        });
+        await fetchAllGardens();
+        connectWebSocket();
     }
 </script>
-<!-- ====================================================== -->
-<!--  !!! อย่าลืมใส่ Google Maps API Key ของคุณตรงนี้ !!! -->
-<!-- ====================================================== -->
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAnohODDdNYfmogkNb-LUPPFNn79ZwP-YQ&callback=initMap"></script>
-
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&callback=initMap"></script>
 </body>
 </html>
