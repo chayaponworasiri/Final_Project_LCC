@@ -1,22 +1,49 @@
-<!-- File: index.html (ฉบับสมบูรณ์ - เพิ่ม Logic แสดงผล Grid) -->
+<!-- File: index.html (ฉบับแก้ไข - มีปุ่มลบแยกชัดเจน) -->
 <!DOCTYPE html>
 <html lang="th">
 <head>
     <meta charset="UTF-8">
     <title>Smart Farm Dashboard</title>
     <style>
+        /* CSS ส่วนใหญ่เหมือนเดิม แต่มีการเพิ่มและปรับแก้เล็กน้อย */
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; margin: 0; background-color: #f4f7fa; color: #333; overflow: hidden; }
         .main-container { display: flex; height: 100vh; }
         .top-bar { position: fixed; top: 0; left: 0; width: 100%; height: 60px; background-color: #ffffff; border-bottom: 1px solid #e0e0e0; display: flex; align-items: center; padding: 0 24px; z-index: 1000; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
         .top-bar h1 { font-size: 1.4em; margin: 0; color: #1a73e8; }
-        .side-bar { width: 240px; background-color: #ffffff; border-right: 1px solid #e0e0e0; padding-top: 80px; box-shadow: 2px 0 5px rgba(0,0,0,0.05); flex-shrink: 0; z-index: 900; }
+        
+        /* --- Sidebar & Delete Button Styles --- */
+        .side-bar { width: 240px; background-color: #ffffff; border-right: 1px solid #e0e0e0; padding-top: 80px; box-shadow: 2px 0 5px rgba(0,0,0,0.05); flex-shrink: 0; z-index: 900; display: flex; flex-direction: column; justify-content: space-between; }
         .side-bar h2 { padding: 0 24px; font-size: 1.0em; color: #5f6368; text-transform: uppercase; letter-spacing: 0.5px; }
         .side-bar ul { list-style-type: none; padding: 0; margin: 0; }
         .side-bar li { display: flex; justify-content: space-between; align-items: center; padding: 15px 24px; cursor: pointer; border-left: 4px solid transparent; transition: all 0.2s ease-in-out; }
         .side-bar li:hover { background-color: #f1f3f4; }
         .side-bar li.active { background-color: #e8f0fe; border-left-color: #1967d2; font-weight: 600; color: #1967d2; }
-        .delete-btn { font-size: 1.2em; color: #888; padding: 5px; border-radius: 50%; }
-        .delete-btn:hover { background-color: #e0e0e0; color: #d32f2f; }
+        
+        /* --- ปุ่มลบใหม่ --- */
+        .sidebar-footer { padding: 20px; }
+        #delete-garden-btn {
+            width: 100%;
+            padding: 12px;
+            font-size: 1em;
+            font-weight: 600;
+            color: white;
+            background-color: #d9534f; /* สีแดงสำหรับลบ */
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        #delete-garden-btn:hover:not(:disabled) {
+            background-color: #c9302c;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+        #delete-garden-btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        /* --- Content Area Styles (เหมือนเดิม) --- */
         .content-area { flex-grow: 1; display: flex; flex-direction: column; padding: 80px 20px 20px 20px; gap: 20px; overflow: hidden; }
         #map-container { flex-basis: 70%; width: 100%; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
         #map { height: 100%; width: 100%; }
@@ -31,8 +58,13 @@
     <div class="top-bar"><h1>Smart Farm Dashboard</h1></div>
     <div class="main-container">
         <nav class="side-bar">
-            <h2>สวนทั้งหมด</h2>
-            <ul id="garden-list"></ul>
+            <div>
+                <h2>สวนทั้งหมด</h2>
+                <ul id="garden-list"></ul>
+            </div>
+            <div class="sidebar-footer">
+                <button id="delete-garden-btn" disabled>ลบสวนที่เลือก</button>
+            </div>
         </nav>
         <main class="content-area">
             <div id="map-container"><div id="map"></div></div>
@@ -44,10 +76,19 @@
     </div>
 
 <script>
+    // --- JavaScript ทั้งหมดยังคงใช้ Logic เดิม แต่มีการปรับแก้เล็กน้อย ---
     let map;
     let activeGardenId = null;
     const polygons = {};
     const gardenColors = ["#FFC107", "#2196F3", "#4CAF50", "#E91E63", "#9C27B0", "#00BCD4"];
+    const deleteBtn = document.getElementById('delete-garden-btn');
+
+    // --- เชื่อมปุ่มลบใหม่เข้ากับฟังก์ชัน ---
+    deleteBtn.onclick = () => {
+        if (activeGardenId) {
+            deleteGarden(activeGardenId);
+        }
+    };
 
     function addGardenToSidebar(garden) {
         const list = document.getElementById('garden-list');
@@ -55,14 +96,7 @@
         const listItem = document.createElement('li');
         listItem.id = `garden-item-${garden.garden_id}`;
         listItem.onclick = () => setActiveGarden(garden.garden_id);
-        const nameSpan = document.createElement('span');
-        nameSpan.innerText = `สวนที่ ${garden.garden_id}`;
-        const deleteBtn = document.createElement('span');
-        deleteBtn.className = 'delete-btn';
-        deleteBtn.innerHTML = '🗑️';
-        deleteBtn.onclick = (e) => { e.stopPropagation(); deleteGarden(garden.garden_id); };
-        listItem.appendChild(nameSpan);
-        listItem.appendChild(deleteBtn);
+        listItem.innerText = `สวนที่ ${garden.garden_id}`;
         list.appendChild(listItem);
     }
 
@@ -71,9 +105,77 @@
         document.getElementById(`garden-item-${gardenId}`)?.classList.add('active');
         document.getElementById('grid-title').innerText = `ข้อมูลค่าสี สวนที่ ${gardenId}`;
         activeGardenId = gardenId;
+        deleteBtn.disabled = false; // เปิดการใช้งานปุ่มลบ
         createGridCells();
     }
 
+    function createGridCells() { /* ... เหมือนเดิม ... */ }
+    function createPolygon(garden) { /* ... เหมือนเดิม ... */ }
+    
+    function removeGardenFromUI(gardenId) {
+        document.getElementById(`garden-item-${gardenId}`)?.remove();
+        if (polygons[gardenId]) {
+            polygons[gardenId].polygon.setMap(null);
+            polygons[gardenId].label.setMap(null);
+            delete polygons[gardenId];
+        }
+        if (activeGardenId == gardenId) {
+            activeGardenId = null;
+            document.getElementById('grid-title').innerText = 'กรุณาเลือกสวน';
+            document.getElementById('data-grid').innerHTML = '';
+            deleteBtn.disabled = true; // ปิดการใช้งานปุ่มลบเมื่อไม่มีสวนให้เลือก
+        }
+    }
+
+    function getCenterOfPolygon(polygon) { /* ... เหมือนเดิม ... */ }
+    async function fetchAllGardens() { /* ... เหมือนเดิม ... */ }
+    
+    async function deleteGarden(gardenId) {
+        if (confirm(`คุณแน่ใจหรือไม่ที่จะลบ "สวนที่ ${gardenId}"?`)) {
+            try {
+                const response = await fetch(`/api/delete_garden/${gardenId}`, { method: 'DELETE' });
+                if (!response.ok) alert('เกิดข้อผิดพลาดในการลบสวน');
+            } catch (error) { console.error('เกิดข้อผิดพลาดในการเชื่อมต่อเพื่อลบ:', error); }
+        }
+    }
+
+    function connectWebSocket() {
+        const ws = new WebSocket(`ws://${window.location.host}`);
+        ws.onopen = () => console.log("[WebSocket] เชื่อมต่อเซิร์ฟเวอร์สำเร็จ!");
+        ws.onmessage = (event) => {
+            const message = JSON.parse(event.data);
+            console.log("[WebSocket] ได้รับคำสั่ง:", message);
+            switch (message.type) {
+                case 'new_garden_added':
+                    addGardenToSidebar(message.data);
+                    createPolygon(message.data);
+                    if (!activeGardenId) setActiveGarden(message.data.garden_id);
+                    break;
+                case 'garden_deleted':
+                    removeGardenFromUI(message.data.garden_id);
+                    break;
+                case 'update_grid_cell':
+                    const { garden_id, cell_index, color } = message.data;
+                    if (garden_id == activeGardenId) {
+                        const cell = document.getElementById(`g${garden_id}-cell-${cell_index}`);
+                        if (cell) {
+                            cell.style.backgroundColor = `rgb(${color.r}, ${color.g}, ${color.b})`;
+                            cell.querySelector('span').style.display = 'none';
+                        }
+                    }
+                    break;
+            }
+        };
+        ws.onclose = () => setTimeout(connectWebSocket, 3000);
+    }
+
+    async function initMap() {
+        map = new google.maps.Map(document.getElementById("map"), { center: { lat: 14.039, lng: 100.613 }, zoom: 16, mapTypeId: 'satellite' });
+        await fetchAllGardens();
+        connectWebSocket();
+    }
+
+    // --- ส่วนที่คัดลอกมาไม่ครบในครั้งก่อน ---
     function createGridCells() {
         const grid = document.getElementById('data-grid');
         grid.innerHTML = '';
@@ -108,20 +210,6 @@
         polygons[gardenId] = { polygon, label };
     }
 
-    function removeGardenFromUI(gardenId) {
-        document.getElementById(`garden-item-${gardenId}`)?.remove();
-        if (polygons[gardenId]) {
-            polygons[gardenId].polygon.setMap(null);
-            polygons[gardenId].label.setMap(null);
-            delete polygons[gardenId];
-        }
-        if (activeGardenId == gardenId) {
-            activeGardenId = null;
-            document.getElementById('grid-title').innerText = 'กรุณาเลือกสวน';
-            document.getElementById('data-grid').innerHTML = '';
-        }
-    }
-
     function getCenterOfPolygon(polygon) {
         const bounds = new google.maps.LatLngBounds();
         polygon.getPath().getArray().forEach(v => bounds.extend(v));
@@ -141,58 +229,7 @@
             }
         } catch (error) { console.error('ไม่สามารถดึงข้อมูลสวนได้:', error); }
     }
-    
-    async function deleteGarden(gardenId) {
-        if (confirm(`คุณแน่ใจหรือไม่ที่จะลบ "สวนที่ ${gardenId}"?`)) {
-            try {
-                const response = await fetch(`/api/delete_garden/${gardenId}`, { method: 'DELETE' });
-                if (!response.ok) alert('เกิดข้อผิดพลาดในการลบสวน');
-            } catch (error) { console.error('เกิดข้อผิดพลาดในการเชื่อมต่อเพื่อลบ:', error); }
-        }
-    }
-
-    function connectWebSocket() {
-        const ws = new WebSocket(`ws://${window.location.host}`);
-        ws.onopen = () => console.log("[WebSocket] เชื่อมต่อเซิร์ฟเวอร์สำเร็จ!");
-        ws.onmessage = (event) => {
-            const message = JSON.parse(event.data);
-            console.log("[WebSocket] ได้รับคำสั่ง:", message);
-            switch (message.type) {
-                case 'new_garden_added':
-                    addGardenToSidebar(message.data);
-                    createPolygon(message.data);
-                    if (!activeGardenId) setActiveGarden(message.data.garden_id);
-                    break;
-                case 'garden_deleted':
-                    removeGardenFromUI(message.data.garden_id);
-                    break;
-                // ======================================================
-                //  !!! จุดแก้ไขสำคัญ: เพิ่ม Logic การแสดงผลค่าสี !!!
-                // ======================================================
-                case 'update_grid_cell':
-                    const { garden_id, cell_index, color } = message.data;
-                    // อัปเดตสีเฉพาะเมื่อผู้ใช้กำลังดูสวนนั้นอยู่
-                    if (garden_id == activeGardenId) {
-                        const cell = document.getElementById(`g${garden_id}-cell-${cell_index}`);
-                        if (cell) {
-                            cell.style.backgroundColor = `rgb(${color.r}, ${color.g}, ${color.b})`;
-                            cell.querySelector('span').style.display = 'none'; // ซ่อนเลข
-                        }
-                    }
-                    break;
-            }
-        };
-        ws.onclose = () => setTimeout(connectWebSocket, 3000);
-    }
-
-    async function initMap() {
-        map = new google.maps.Map(document.getElementById("map"), {
-            center: { lat: 14.039, lng: 100.613 }, zoom: 16, mapTypeId: 'satellite'
-        });
-        await fetchAllGardens();
-        connectWebSocket();
-    }
 </script>
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&callback=initMap"></script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAnohODDdNYfmogkNb-LUPPFNn79ZwP-YQ&callback=initMap"></script>
 </body>
 </html>
